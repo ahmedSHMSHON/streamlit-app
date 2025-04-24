@@ -2,9 +2,18 @@ import streamlit as st
 import pandas as pd
 import json
 import os
+import time
+import pytz
 from datetime import datetime, date, timedelta
 from streamlit_autorefresh import st_autorefresh
-import time
+
+
+
+# ضبط الوقت على المنطقة الزمنية الخاصة بك (UTC+3)
+tz = pytz.timezone('Asia/Riyadh')  # الرياض
+current_time = datetime.now(tz)
+
+
 # إعداد صفحة Streamlit
 st.set_page_config(
     page_title="تطبيق إدارة اليومية",
@@ -78,8 +87,6 @@ page = st.sidebar.radio("انتقل إلى:", [
     "الصفحة الرئيسية", "الجدول اليومي", "فيديوهات التمارين", "أذكار", "جدول القرآن","افكاري","مهام آجلة"
 ])
 
-
-
 @st.cache_data(show_spinner=False)# إضافة show_spinner=False لإخفاء رسالة التخزين المؤقت
 def load_completed_tasks(file_name, today):
     """دالة لتحميل المهام المكتملة مع معالجة الأخطاء"""
@@ -106,6 +113,8 @@ def home_page():
         st.markdown("---")
         st.metric("📅 التاريخ", date.today().strftime('%Y-%m-%d'))
         st.metric("⏰ الوقت الآن", datetime.now().strftime('%H:%M:%S'))
+        st.metric("⏰ الوقت الآن", current_time.strftime(" %H:%M:%S"))
+
 
     # 👇 المهام تبدأ هنا مباشرة بعد الوقت
 
