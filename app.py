@@ -419,7 +419,8 @@ def workout_videos_page():
             
             timer_placeholder.markdown("### ✅ تم الانتهاء!")
             progress_bar.empty()
-            st.audio("notification.wav")  # إشعار صوتي (اختياري)
+            st.audio("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3")
+  # إشعار صوتي (اختياري)
 
     with video_col:
         st.markdown(f"**{vids[idx][0]}**")
