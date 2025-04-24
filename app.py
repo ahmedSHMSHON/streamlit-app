@@ -112,7 +112,7 @@ def home_page():
         st.title("مرحبًا بك احمد   ")
         st.markdown("---")
         st.metric("📅 التاريخ", date.today().strftime('%Y-%m-%d'))
-        st.metric("⏰ الوقت الآن", current_time.strftime(" %H:%M:%S"))
+        st.metric("⏰ الوقت الآن", current_time.strftime("%I:%M:%S %p"))
 
 
     # 👇 المهام تبدأ هنا مباشرة بعد الوقت
