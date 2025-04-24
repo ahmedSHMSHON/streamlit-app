@@ -403,6 +403,7 @@ def workout_videos_page():
             value=30,
             step=5,
             key=f"timer_{sel}_{idx}"  # مفتاح فريد لكل فيديو
+          
         )
         
         if st.button("▶️ تشغيل", key=f"start_{sel}_{idx}"):
@@ -419,9 +420,10 @@ def workout_videos_page():
             
             timer_placeholder.markdown("### ✅ تم الانتهاء!")
             progress_bar.empty()
-            st.audio("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3")
+            st.audio("https://assets.mixkit.co/sfx/preview/mixkit-bell-notification-933.mp3")
   # إشعار صوتي (اختياري)
 
+        
     with video_col:
         st.markdown(f"**{vids[idx][0]}**")
         st.video(vids[idx][1])
