@@ -14,6 +14,8 @@ tz = pytz.timezone('Asia/Riyadh')  # الرياض
 current_time = datetime.now(tz)
 
 
+
+
 # إعداد صفحة Streamlit
 st.set_page_config(
     page_title="تطبيق إدارة اليومية",
@@ -111,7 +113,7 @@ def home_page():
     with col1:
         st.title("مرحبًا بك احمد   ")
         st.markdown("---")
-        st.metric("📅 التاريخ", date.today().strftime('%Y-%m-%d'))
+        st.metric("📅 التاريخ", current_time.strftime('%Y-%m-%d'))
         st.metric("⏰ الوقت الآن", current_time.strftime("%I:%M:%S %p"))
 
 
@@ -420,8 +422,16 @@ def workout_videos_page():
             
             timer_placeholder.markdown("### ✅ تم الانتهاء!")
             progress_bar.empty()
-            st.audio("https://assets.mixkit.co/sfx/preview/mixkit-bell-notification-933.mp3")
-  # إشعار صوتي (اختياري)
+
+
+        
+            # تشغيل الصوت تلقائيًا باستخدام HTML
+            audio_html = """
+            <audio autoplay>
+                <source src="https://assets.mixkit.co/sfx/preview/mixkit-bell-notification-933.mp3" type="audio/mp3">
+            </audio>
+            """
+            st.markdown(audio_html, unsafe_allow_html=True)
 
         
     with video_col:
