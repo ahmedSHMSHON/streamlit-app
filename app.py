@@ -104,7 +104,6 @@ def load_completed_tasks(file_name, today):
         st.error(f"خطأ في قراءة ملف المهام: {str(e)}")
         return set()
 
-# الصفحة الرئيسية
 def home_page():
     st_autorefresh(interval=1000, key="refresh")
 
@@ -120,12 +119,10 @@ def home_page():
     # 👇 المهام تبدأ هنا مباشرة بعد الوقت
 
         current_hour = datetime.now().hour
-        if 4 <= current_hour < 12:
+        if 4 <= current_hour < 13:
             period_name = "🌅 الصباح"
-        elif 12 <= current_hour < 16:
-            period_name = "🌞 الظهر"
-        elif 16 <= current_hour < 19:
-            period_name = "🏋️ العصر"
+        elif 13 <= current_hour < 19:
+            period_name = "🏋️ الظهر والعصر"
         else:
             period_name = "🌙 من المغرب حتى النوم"
 
@@ -192,20 +189,16 @@ def home_page():
             st.image("me.png", use_container_width=True)
 
 
-# هذه الدالة الجديدة نضيفها قبل daily_schedule_page
 def get_daily_tasks():
     """ترجع المهام مجمعة حسب الفترات الزمنية"""
     return {
         "🌅 الصباح": [
-            "الفجر في المسجد", "فرش الأسنان وغسل الوجه", "أذكار الصباح", "Cordyceps على الريق",
-            "مراجعة جزء من القرآن", "فطور + ALCAR", "دورة Python (1 ساعة)", "تدريب طباعة أو تحسين الخط"
+            "فرش الأسنان وغسل الوجه", "أذكار الصباح", "Cordyceps على الريق",
+            "مراجعة جزء من القرآن", "فطور + ALCAR", "دورة Python (1 ساعة)", "تدريب كتابة كيبورد أو تحسين الخط"
         ],
-        "🌞 الظهر": [
-            "صلاة الظهر في المسجد", "دورة SQL (30–45 دقيقة)", "PowerShell / اختصارات (15 دقيقة)",
-            "غداء + Resveratrol", "دورة Excel + Power BI (1 ساعة)"
-        ],
-        "🏋️ العصر": [
-            "صلاة العصر في المسجد", "التمرين حسب الجدول", "تغذية بعد التمرين", "دوش"
+        "🏋️ الظهر والعصر": [
+            "دورة SQL (30–45 دقيقة)", "PowerShell / اختصارات (15 دقيقة)",
+            "غداء + Resveratrol", "دورة Excel + Power BI (1 ساعة)","التمرين حسب الجدول"
         ],
         "🌙 من المغرب حتى النوم": [
             "صلاة المغرب والعشاء في المسجد", "أذكار المساء", "إكمال النواقص", "Magnesium + عصير حبحب",
@@ -347,7 +340,6 @@ def update_special_task(task, date):
     except Exception as e:
         st.error(f"خطأ في تحديث المهمة: {str(e)}")
 
-# صفحة فيديوهات التمارين
 def workout_videos_page():
     st.title("🎥 فيديوهات التمارين")
     st.markdown("### اختر يوم التمرين:")
@@ -405,33 +397,27 @@ def workout_videos_page():
             value=30,
             step=5,
             key=f"timer_{sel}_{idx}"  # مفتاح فريد لكل فيديو
-          
         )
-        
-        if st.button("▶️ تشغيل", key=f"start_{sel}_{idx}"):
+
+        if st.button("▶️ بدء التمرين", key=f"start_{sel}_{idx}"):
+            # 1. تشغيل العداد
             end_time = datetime.now() + timedelta(seconds=timer_duration)
             timer_placeholder = st.empty()
             progress_bar = st.progress(0)
-            
+
             while datetime.now() < end_time:
                 remaining = (end_time - datetime.now()).total_seconds()
                 mins, secs = divmod(int(remaining), 60)
                 timer_placeholder.markdown(f"### ⏳ `{mins:02d}:{secs:02d}`")
                 progress_bar.progress(1 - (remaining / timer_duration))
                 time.sleep(0.1)
-            
+
+            # 2. عرض رسالة انتهاء
             timer_placeholder.markdown("### ✅ تم الانتهاء!")
             progress_bar.empty()
 
-
-        
-            # تشغيل الصوت تلقائيًا باستخدام HTML
-            audio_html = """
-            <audio autoplay>
-                <source src="https://assets.mixkit.co/sfx/preview/mixkit-bell-notification-933.mp3" type="audio/mp3">
-            </audio>
-            """
-            st.markdown(audio_html, unsafe_allow_html=True)
+            # 3. تشغيل صوت الجرس
+            st.audio("https://assets.mixkit.co/sfx/preview/mixkit-bell-notification-933.mp3", format="audio/mp3")
 
         
     with video_col:
@@ -450,7 +436,6 @@ def workout_videos_page():
     st.markdown(f"### الفيديو {idx + 1} من {len(vids)}")
 
 
-# صفحة الأذكار
 
 def azkark_page():
     st.title("🕌 أذكارك")
@@ -464,7 +449,6 @@ def azkark_page():
     else:
         st.write(" افتح تطبيق اذكار ")
 
-# صفحة جدول القرآن
 
 def quran_schedule_page():
     st.title("📖 جدول الحفظ والمراجعة")
