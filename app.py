@@ -344,18 +344,18 @@ def workout_videos_page():
     st.title("🎥 فيديوهات التمارين")
     st.markdown("### اختر يوم التمرين:")
     days = {
+        " ": [],
         "اليوم الأول": [
             ("تمارين المرونة", "https://www.youtube.com/watch?v=y-N9T1DUvbk&ab_channel=SHMSHONMOON"),
-            ("تمرين مفصل القدم", "https://www.youtube.com/watch?v=f9Lc3x8zLR8"),
-            ("تمارين اللياقة", "https://www.youtube.com/watch?v=qJ7eOpJtYmg"),
+            ("تمارين الذراع", "https://www.youtube.com/watch?v=Ea2fEvR5ii0"),
             ("تمارين الكتف", "https://www.youtube.com/watch?v=mvBUuhinalo"),
+            ("تمرين مفصل القدم", "https://www.youtube.com/watch?v=f9Lc3x8zLR8"),
             ("تمارين الصدر", "https://www.youtube.com/watch?v=D2kq3I7diuE")
         ],
         "اليوم الثاني": [
             ("تمارين المرونة", "https://www.youtube.com/watch?v=y-N9T1DUvbk&ab_channel=SHMSHONMOON"),
-            ("تمارين اللياقة", "https://www.youtube.com/watch?v=W431mrJarDs"),
-            ("تمارين البطن", "https://www.youtube.com/watch?v=fjZ6rgtyTSM"),
-            ("تمارين الذراع", "https://www.youtube.com/watch?v=Ea2fEvR5ii0")
+            ("تمارين الأرجل", "https://www.youtube.com/watch?v=أرجل3")
+            ("تمارين البطن", "https://www.youtube.com/watch?v=fjZ6rgtyTSM")
         ],
         "اليوم الثالث": [
             ("تمارين المرونة", "https://www.youtube.com/watch?v=y-N9T1DUvbk&ab_channel=SHMSHONMOON"),
@@ -637,6 +637,20 @@ def future_tasks_page():
                 file_content = f.read()
                 if file_content.strip():  # التأكد من أن الملف ليس فارغاً
                     tasks = json.loads(file_content)
+        
+        # ✅ تحديث حالة المهام القديمة (هنا الإضافة الجديدة)
+        today = date.today()
+        changed = False
+        for task in tasks:
+            task_date = datetime.strptime(task["date"], "%Y-%m-%d").date()
+            if not task["completed"] and task_date < today:
+                task["completed"] = True
+                changed = True
+        
+        if changed:
+            with open(tasks_file, "w", encoding="utf-8") as f:
+                json.dump(tasks, f, ensure_ascii=False, indent=4)
+    
     except (json.JSONDecodeError, FileNotFoundError):
         st.warning("⚠️ حدث خطأ في قراءة ملف المهام، سيتم إنشاء ملف جديد")
         tasks = []
@@ -746,7 +760,8 @@ def future_tasks_page():
                     st.rerun()
             
             st.markdown("---")
-# صفحة فارغة
+
+
 
 def empty_page():
     st.write("")
