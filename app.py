@@ -344,37 +344,34 @@ def workout_videos_page():
     st.title("🎥 فيديوهات التمارين")
     st.markdown("### اختر يوم التمرين:")
     days = {
-        " ": [],
         "اليوم الأول": [
-            ("تمارين المرونة", "https://www.youtube.com/watch?v=y-N9T1DUvbk&ab_channel=SHMSHONMOON"),
             ("تمارين الذراع", "https://www.youtube.com/watch?v=Ea2fEvR5ii0"),
             ("تمارين الكتف", "https://www.youtube.com/watch?v=mvBUuhinalo"),
-            ("تمرين مفصل القدم", "https://www.youtube.com/watch?v=f9Lc3x8zLR8"),
-            ("تمارين الصدر", "https://www.youtube.com/watch?v=D2kq3I7diuE")
-        ],
-        "اليوم الثاني": [
-            ("تمارين المرونة", "https://www.youtube.com/watch?v=y-N9T1DUvbk&ab_channel=SHMSHONMOON"),
-            ("تمارين الأرجل", "https://www.youtube.com/watch?v=أرجل3")
-            ("تمارين البطن", "https://www.youtube.com/watch?v=fjZ6rgtyTSM")
-        ],
-        "اليوم الثالث": [
-            ("تمارين المرونة", "https://www.youtube.com/watch?v=y-N9T1DUvbk&ab_channel=SHMSHONMOON"),
-            ("تمارين مرونة الحوض", "https://www.youtube.com/watch?v=zCurzz7Ir2Q&ab_channel=A_BOOM"),
-            ("تمرين مفصل القدم", "https://www.youtube.com/watch?v=f9Lc3x8zLR8"),
-            ("تمارين الظهر", "https://www.youtube.com/watch?v=lZ-WUS--018"),
-            ("تمارين الأرجل", "https://www.youtube.com/watch?v=أرجل3")
-        ],
-        "اليوم الرابع": [
-            ("تمارين المرونة", "https://www.youtube.com/watch?v=y-N9T1DUvbk&ab_channel=SHMSHONMOON"),
             ("تمارين اللياقة", "https://www.youtube.com/watch?v=lyB4XoGIWPA"),
             ("تمرين مفصل القدم", "https://www.youtube.com/watch?v=f9Lc3x8zLR8"),
-            ("تمارين الكور", "https://www.youtube.com/watch?v=4m-esy408eQ")
+            ("تمارين الجلوتس", "https://www.youtube.com/watch?v=D2kq3I7diuE")
+        ],
+        "اليوم الثاني": [
+            ("تمارين ارجل", "https://www.youtube.com/watch?v=y-N9T1DUvbk&ab_channel=SHMSHONMOON"),
+            ("تمارين جلوتس", "https://www.youtube.com/watch?v=أرجل3"),
+            ("تمارين حوض", "https://www.youtube.com/watch?v=fjZ6rgtyTSM")
+        ],
+        "اليوم الثالث": [
+            ("تمارين صدر", "https://www.youtube.com/watch?v=y-N9T1DUvbk&ab_channel=SHMSHONMOON"),
+            ("تمارين كارديو ", "https://www.youtube.com/watch?v=zCurzz7Ir2Q&ab_channel=A_BOOM"),
+            ("تمرين مفصل القدم", "https://www.youtube.com/watch?v=f9Lc3x8zLR8"),
+            ("تمارين الجلوتس", "https://www.youtube.com/watch?v=أرجل3")
+        ],
+        "اليوم الرابع": [
+            ("تمارين ظهر", "https://www.youtube.com/watch?v=y-N9T1DUvbk&ab_channel=SHMSHONMOON"),
+            ("تمارين اللياقة", "https://www.youtube.com/watch?v=lyB4XoGIWPA"),
+            ("تمرين مفصل القدم", "https://www.youtube.com/watch?v=f9Lc3x8zLR8"),
+            ("تمارين الجلوتس", "https://www.youtube.com/watch?v=4m-esy408eQ")
         ],
         "اليوم الخامس": [
-            ("تمارين المرونة", "https://www.youtube.com/watch?v=y-N9T1DUvbk&ab_channel=SHMSHONMOON"),
-            ("تمارين مرونة الحوض","https://www.youtube.com/watch?v=zCurzz7Ir2Q&ab_channel=A_BOOM"),
-            ("تمارين اللياقة", "https://www.youtube.com/watch?v=PTZNYScvKrY"),
-            ("تمارين الكور", "https://www.youtube.com/watch?v=-fq72QfRhTk")
+            ("تمارين بطن", "https://www.youtube.com/watch?v=y-N9T1DUvbk&ab_channel=SHMSHONMOON"),
+            ("تمارين الجلوتس", "https://www.youtube.com/watch?v=PTZNYScvKrY"),
+            ("تمارين حوض", "https://www.youtube.com/watch?v=-fq72QfRhTk")
         ],
     }
     sel = st.selectbox("اختر اليوم:", list(days.keys()))
@@ -385,46 +382,10 @@ def workout_videos_page():
     vids = days[sel]
     idx = st.session_state[key]
     
-    # ─── وضع التايمر فوق الفيديو مباشرة ───
-    timer_col, video_col = st.columns([1, 2])  # تقسيم العمودين
+    st.markdown(f"**{vids[idx][0]}**")
+    st.video(vids[idx][1])
     
-    with timer_col:
-        st.markdown("### ⏱️ العد التنازلي")
-        timer_duration = st.slider(
-            "المدة (ثواني):",
-            min_value=5,
-            max_value=300,
-            value=30,
-            step=5,
-            key=f"timer_{sel}_{idx}"  # مفتاح فريد لكل فيديو
-        )
-
-        if st.button("▶️ بدء التمرين", key=f"start_{sel}_{idx}"):
-            # 1. تشغيل العداد
-            end_time = datetime.now() + timedelta(seconds=timer_duration)
-            timer_placeholder = st.empty()
-            progress_bar = st.progress(0)
-
-            while datetime.now() < end_time:
-                remaining = (end_time - datetime.now()).total_seconds()
-                mins, secs = divmod(int(remaining), 60)
-                timer_placeholder.markdown(f"### ⏳ `{mins:02d}:{secs:02d}`")
-                progress_bar.progress(1 - (remaining / timer_duration))
-                time.sleep(0.1)
-
-            # 2. عرض رسالة انتهاء
-            timer_placeholder.markdown("### ✅ تم الانتهاء!")
-            progress_bar.empty()
-
-            # 3. تشغيل صوت الجرس
-            st.audio("https://assets.mixkit.co/sfx/preview/mixkit-bell-notification-933.mp3", format="audio/mp3")
-
-        
-    with video_col:
-        st.markdown(f"**{vids[idx][0]}**")
-        st.video(vids[idx][1])
-    
-    # ─── أزرار التنقل ───
+    # أزرار التنقل
     col1, col2 = st.columns(2)
     with col1:
         if idx > 0:
@@ -434,7 +395,6 @@ def workout_videos_page():
             st.button("التالي ➡️", on_click=lambda: st.session_state.__setitem__(key, idx + 1))
     
     st.markdown(f"### الفيديو {idx + 1} من {len(vids)}")
-
 
 
 def azkark_page():
